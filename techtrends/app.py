@@ -1,22 +1,21 @@
 import sqlite3
 import logging
+import sys
 
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
-
-no_of_connections = 0   # variable to count the no of connections made with the database
 
 
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
-    get_db_connection.counter += 1
+    get_db_connection.counter += 1  # increments every time a connection is established with the DB
     connection = sqlite3.connect('database.db')
     connection.row_factory = sqlite3.Row
     return connection
 
 
-get_db_connection.counter = 0
+get_db_connection.counter = 0     # variable to count the no of connections made with the database
 
 
 # Function to get a post using its ID
@@ -40,6 +39,19 @@ def get_no_of_posts():
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
+# Define StreamHandlers for stdout and stderr
+stdout_handler = logging.StreamHandler(sys.stdout)
+stdout_handler.setLevel(logging.DEBUG)
+stderr_handler = logging.StreamHandler(sys.stderr)
+stderr_handler.setLevel(logging.ERROR)
+dual_handlers = [stdout_handler, stderr_handler]
+
+# Define basic configuration for the log messages
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(levelname)s:%(name)s:[%(asctime)s] - %(message)s',
+)
+
 
 # Define the main route of the web application 
 @app.route('/')
@@ -56,17 +68,17 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-      logging.debug("Error 404: Page not found!!")
-      return render_template('404.html'), 404
+        app.logger.info('Error 404: Page not found!!')
+        return render_template('404.html'), 404
     else:
-      logging.debug("Article {} retrived!".format(post['title']))
-      return render_template('post.html', post=post)
+        app.logger.info('Retrieved Article: %s', post['title'])
+        return render_template('post.html', post=post)
 
 
 # Define the About Us page
 @app.route('/about')
 def about():
-    logging.debug("About us page retrived")
+    app.logger.info('About Us page retrieved!')
     return render_template('about.html')
 
 
@@ -85,7 +97,7 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-            logging.debug("New article created: {{%(title)s}}")
+            app.logger.info('New article created: %s', title)
             return redirect(url_for('index'))
 
     return render_template('create.html')
@@ -96,12 +108,12 @@ def create():
 def status():
     response = app.response_class(
         response=json.dumps({ 
-            "result": "OK - healthy" 
+            'result': 'OK - healthy'
         }),
         status=200,
         mimetype='application/json'
     )
-
+    app.logger.info('healthz route reached successfully!')
     return response
 
 
@@ -111,22 +123,16 @@ def metrics():
     no_of_posts = get_no_of_posts()
     response = app.response_class(
         response=json.dumps({
-            "posts_count": no_of_posts,
-            "db_connection_count": get_db_connection.counter  
+            'posts_count': no_of_posts,
+            'db_connection_count': get_db_connection.counter
         }),
         status=200,
         mimetype='application/json'
     )
-
+    app.logger.info('metrics route reached successfully!')
     return response
 
 
 # start the application on port 3111
 if __name__ == "__main__":
-
-   logging.basicConfig(
-       level=logging.DEBUG, 
-       format="{{%(asctime)s}}, {{%(message)s}}"
-    ) 
-
-   app.run(host='0.0.0.0', port='3111')
+    app.run(host='0.0.0.0', port='3111')
