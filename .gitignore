@@ -1,3 +1,4 @@
 .idea
-techtrends/database.db
 techtrends/__pycache__
+*.DS_Store
+techtrends/database.db
