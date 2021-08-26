@@ -28,11 +28,11 @@ spec:
             memory: {{ .Values.resources.limits.memory }}
         livenessProbe:
           httpGet:
-            path: {{ .Values.livenessProbe }}
-            port: {{ .Values.containerPort }}
+            path: {{ .Values.livenessProbe.path }}
+            port: {{ .Values.livenessProbe.port }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.readninessProbe }}
-            port: {{ .Values.containerPort }}
+            path: {{ .Values.readinessProbe.path }}
+            port: {{ .Values.readinessProbe.port }}
         ports:
         - containerPort: {{ .Values.containerPort }}

@@ -6,7 +6,8 @@ replicaCount: 5
 service:
   port: 7111
 
-imagePullPolicy: Always
+image:
+  imagePullPolicy: Always
 
 resources: 
   requests:
