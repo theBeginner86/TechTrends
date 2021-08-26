@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        app:  techtrends
+        app: techtrends
     spec:
       containers:
       - image:  {{ .Values.image.repository }}:{{ .Values.image.tag }}
@@ -21,11 +21,11 @@ spec:
         name: techtrends-cont
         resources:
           requests:
-            cpu: {{ .Values.respources.requests.cpu }}
-            memory: {{ .Values.respources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
+            memory: {{ .Values.resources.requests.memory }}
           limits:
-            cpu: {{ .Values.limits.requests.cpu }}
-            memory: {{ .Values.limits.requests.memory }}
+            cpu: {{ .Values.resources.limits.cpu }}
+            memory: {{ .Values.resources.limits.memory }}
         livenessProbe:
           httpGet:
             path: {{ .Values.livenessProbe }}
