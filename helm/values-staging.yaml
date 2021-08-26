@@ -3,7 +3,8 @@ namespace:
 
 replicaCount: 3
 
-servicePort: 5111
+service:
+  port: 5111
 
 resources: 
   requests:

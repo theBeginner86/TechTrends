@@ -1,9 +1,10 @@
 namespace:
   name: prod
 
-replicaCount: 3
+replicaCount: 5
 
-ServicePort: 7111
+service:
+  port: 7111
 
 imagePullPolicy: Always
 
