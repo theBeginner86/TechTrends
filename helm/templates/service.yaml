@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name:  techtrends
-  namespace: {{ .Values.namspace.name }}
+  namespace: {{ .Values.namespace.name }}
 spec:
   selector:
     app:  techtrends
