@@ -2,7 +2,7 @@
 
 #### **Introduction**
 
-<p>This project used latest CloudNative tools for deploying a blogging app: TechnTrends</p>
+<p>This project used latest CloudNative tools for deploying a blogging app: TechTrends</p>
 <br>
 
 <p>
