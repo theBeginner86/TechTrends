@@ -10,7 +10,7 @@ service:
 image:
   repository: thebeginner86/techtrends
   tag: latest
-  imagePullPolicy: ifNotPresent
+  imagePullPolicy: IfNotPresent
 
 replicaCount: 1
 
